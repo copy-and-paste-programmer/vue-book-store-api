@@ -26,7 +26,8 @@ class AuthorRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|email:rfc,filter|regex:/(.+)@(.+)\.(.+)/i|unique:authors',
-            'description' => 'nullable'
+            'description' => 'required',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif'
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthorRequest;
 use App\Repositories\AuthorRepository;
+use App\Http\Requests\AuthorUpdateRequest;
 
 class AuthorController extends Controller
 {
@@ -27,7 +28,10 @@ class AuthorController extends Controller
         return response()->json(['code'=>404,'message'=>"Can't create author."], 404);
     }
 
-    // public function update(AuthorUpdateRequest $request){
-        
-    // }
+    public function update(AuthorUpdateRequest $request){
+        $success = $this->authorRepository->updateAuthor($request);
+        if($success){
+            
+        }
+    }
 }

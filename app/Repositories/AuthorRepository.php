@@ -22,4 +22,14 @@ class AuthorRepository
         $author->save();
         return true;
     }
+
+    public function updateAuthor($data) {
+        $author = new Author;
+        $author->name = $data->name;
+        $author->email = $data->email;
+        $author->description = $data->description;
+        $author->updated_at = now();
+        $author->update();
+        return true;
+    }
 }
