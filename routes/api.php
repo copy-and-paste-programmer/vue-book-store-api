@@ -24,4 +24,8 @@ Route::get('/hello',function(){
     return response('hello');
 });
 
-Route::get('/cateories',[CategoryController::class,'getAll']);
+// Category
+Route::get('/cateories',[CategoryController::class,'index']);
+Route::post('/cateories/store',[CategoryController::class,'store']);
+Route::put('/cateories/{id}',[CategoryController::class,'update']);
+Route::delete('/cateories/{id}',[CategoryController::class,'destroy']);

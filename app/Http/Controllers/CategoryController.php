@@ -2,21 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 use App\Repositories\CategoryRepository;
 
 class CategoryController extends Controller
 {
     protected $categoryRepository;
-    
+
     public function __construct(CategoryRepository $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getAll()
+    public function index()
     {
-        return $this->categoryRepository->getAll();
+        return $this->categoryRepository->index();
+    }
+
+    public function store(CategoryRequest $request)
+    {
+        return $this->categoryRepository->store($request);
+
+    }
+
+    public function update(CategoryRequest $request, $id)
+    {
+        return $this->categoryRepository->update($request, $id);
+    }
+
+    public function destroy($id)
+    {
+        return $this->categoryRepository->destroy($id);
     }
 
 }
