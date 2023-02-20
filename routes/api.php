@@ -25,3 +25,5 @@ Route::get('/hello',function(){
 });
 
 Route::get('/author/list' , [AuthorController::class , 'getAuthor']);
+
+Route::post('/author/create' , [AuthorController::class , 'create']);
