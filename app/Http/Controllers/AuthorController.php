@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AuthorRequest;
 use App\Repositories\AuthorRepository;
 use App\Http\Requests\AuthorUpdateRequest;
+use App\Services\ImageService;
 
 class AuthorController extends Controller
 {
     public $authorRepository;
 
-    public function __construct(AuthorRepository $authorRepository) {
+    public $imageService;
+
+    public function __construct(AuthorRepository $authorRepository , ImageService $imageService) {
         $this->authorRepository = $authorRepository;
+        $this->imageService = $imageService;
     }
 
     public function getAuthor(){
@@ -20,8 +24,9 @@ class AuthorController extends Controller
         return response()->json($authors);
     }
 
-    public function create(AuthorRequest $request){
-        $success = $this->authorRepository->createAuthor($request);
+    public function create(AuthorRequest $request) {
+        $image = $this->imageService->upload($request->file('image'));
+        $success = $this->authorRepository->createAuthor($request , $image);
         if($success) {
             return response()->json(['message' => "Author create successfully."]);
         }
@@ -30,8 +35,8 @@ class AuthorController extends Controller
 
     public function update(AuthorUpdateRequest $request){
         $success = $this->authorRepository->updateAuthor($request);
-        if($success){
-            
-        }
+        // if($success){
+
+        // }
     }
 }
