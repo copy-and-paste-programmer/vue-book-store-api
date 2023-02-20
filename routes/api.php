@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,12 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/hello',function(){
+Route::get('/hello', function () {
     return response('hello');
 });
 
 // Category
-Route::get('/cateories',[CategoryController::class,'index']);
-Route::post('/cateories/store',[CategoryController::class,'store']);
-Route::put('/cateories/{id}',[CategoryController::class,'update']);
-Route::delete('/cateories/{id}',[CategoryController::class,'destroy']);
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/categories/store', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+
+Route::prefix('upload')->name('upload.')->controller(UploadController::class)->group(function () {
+    Route::post('images', 'images')->name('images');
+});

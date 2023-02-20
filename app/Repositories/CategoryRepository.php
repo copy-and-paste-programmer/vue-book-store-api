@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Resources\CategoryResource;
 
-class CategoryRepository 
+class CategoryRepository
 {
     /**
      * Get Build Types
@@ -28,7 +28,7 @@ class CategoryRepository
     }
 
     public function update(Request $request ,$id)
-    {   
+    {
         $category = Category::findOrFail($id);
         $category->update([
             'name' => $request->name
