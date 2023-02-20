@@ -32,7 +32,11 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        return $this->categoryRepository->destroy($id);
+        $this->categoryRepository->destroy($id);
+        
+        return response()->json([
+            'message' => 'A category delete successfully'
+        ], 200);
     }
 
 }

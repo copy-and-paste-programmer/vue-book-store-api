@@ -41,9 +41,5 @@ class CategoryRepository
     {
         $category = Category::findOrFail($id);
         $category->delete();
-
-        return response()->json([
-            'message' => 'A category delete successfully'
-        ], 200);
     }
 }
