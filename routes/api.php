@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +33,13 @@ Route::post('/categories/store', [CategoryController::class, 'store']);
 Route::put('/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
+// Book
+Route::get('/books', [BookController::class, 'index']);
+Route::post('/books/store', [BookController::class, 'store']);
 
 Route::prefix('upload')->name('upload.')->controller(UploadController::class)->group(function () {
     Route::post('images', 'images')->name('images');
 });
+Route::get('/author/list' , [AuthorController::class , 'getAuthor']);
+
+Route::post('/author/create' , [AuthorController::class , 'create']);
