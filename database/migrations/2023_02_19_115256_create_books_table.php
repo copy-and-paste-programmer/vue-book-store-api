@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('price');
+            $table->longText('description');
             $table->foreignId('author_id')->constrained('authors')->cascadeOnDelete();
             $table->string('publisher')->default(null);
             $table->date('published_at');
