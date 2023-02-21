@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\ImageResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthorResource extends JsonResource
@@ -19,7 +20,7 @@ class AuthorResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'description' => $this->description,
-            'image' => new ImageResource,
+            'image' => new ImageResource($this->whenLoaded('image')),
         ];
     }
 }
