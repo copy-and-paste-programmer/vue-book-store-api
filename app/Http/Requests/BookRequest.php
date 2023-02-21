@@ -22,16 +22,16 @@ class BookRequest extends FormRequest
      * @return array<string, mixed>
      */
     public function rules()
-    {
+    {   
         return [
-            'name' => ['required'],
-            'price' => ['required'],
-            'description' => ['required'],
+            'name' => ['required','max:200'],
+            'price' => ['required','numeric','min:1','max:99999999'],
+            'description' => ['required','min:10'],
             'author_id' => ['required'],
-            'publisher' => ['required'],
-            'image' => ['required'],
-            'categories' => ['required'],
-            'published_at' => ['required']
+            'publisher' => ['required','max:200'],
+            'image' => [ $this->isMethod('POST') ? 'required': 'nullable','mimes:jpg,png,jpeg', 'max:2000'],
+            'categories.*' => ['required'],
+            'published_at' => ['required','date_format:Y-m-d']
         ];
     }
 }

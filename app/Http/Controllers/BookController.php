@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BookRequest;
-use App\Repositories\BookRepository;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Http\Resources\BookResource;
+use App\Repositories\BookRepository;
 
 class BookController extends Controller
 {   
@@ -21,7 +22,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        return $this->bookRepository->index();
+        $allBooks = $this->bookRepository->index();
+        return BookResource::collection($allBooks);
     }
 
     /**
@@ -42,7 +44,8 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        return $this->bookRepository->store($request);
+        $createdBook =  $this->bookRepository->store($request);
+        return new BookResource($createdBook);
     }
 
     /**
@@ -53,7 +56,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+       $showBook = $this->bookRepository->show($id);
+       return new BookResource($showBook);
     }
 
     /**
@@ -74,9 +78,10 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, $id)
     {
-        //
+        $updatedBook = $this->bookRepository->update($request,$id);
+        return new BookResource($updatedBook);
     }
 
     /**
@@ -87,6 +92,9 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->bookRepository->destroy($id);
+        return response()->json([
+            'message' => 'The book delete successfully',
+        ], 200);
     }
 }
