@@ -27,11 +27,11 @@ Route::get('/hello', function () {
 });
 
 //Author
-Route::group(['prefix'=>'author'],function(){
-    Route::get('/list' , [AuthorController::class , 'getAuthor']);
-    Route::post('/create' , [AuthorController::class , 'create']);
-    Route::put('/edit/{id}' , [AuthorController::class , 'update']);
-    Route::delete('/delete/{id}' , [AuthorController::class , 'delete']);
+Route::group(['prefix'=>'authors'],function(){
+    Route::get('/' , [AuthorController::class , 'index']);
+    Route::post('/' , [AuthorController::class , 'create']);
+    Route::put('/{id}' , [AuthorController::class , 'update']);
+    Route::delete('/{id}' , [AuthorController::class , 'destroy']);
 });
 
 

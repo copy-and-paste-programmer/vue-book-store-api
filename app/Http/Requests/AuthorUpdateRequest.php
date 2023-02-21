@@ -26,7 +26,7 @@ class AuthorUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => ['required','email','email:rfc,filter','regex:/(.+)@(.+)\.(.+)/i',Rule::unique('authors','email')->ignore('id')],
+            'email' => ['required','email','email:rfc,filter','regex:/(.+)@(.+)\.(.+)/i',Rule::unique('authors' , 'email')->ignore($this->id)],
             'description' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif'
         ];

@@ -7,12 +7,11 @@ use App\Http\Requests\AuthorRequest;
 use App\Repositories\AuthorRepository;
 use App\Http\Requests\AuthorUpdateRequest;
 use App\Services\ImageService;
-
 class AuthorController extends Controller
 {
-    public $authorRepository;
+    private $authorRepository;
 
-    public $imageService;
+    private $imageService;
 
     public function __construct(AuthorRepository $authorRepository , ImageService $imageService) {
         $this->authorRepository = $authorRepository;
@@ -22,9 +21,9 @@ class AuthorController extends Controller
     /**
      * get author
      */
-    public function getAuthor()
+    public function index()
     {
-        $authors =  $this->authorRepository->getAuthor();
+        $authors =  $this->authorRepository->index();
         return response()->json($authors);
     }
 
@@ -34,7 +33,7 @@ class AuthorController extends Controller
     public function create(AuthorRequest $request) 
     {
         $image = $this->imageService->upload($request->file('image'));
-        $success = $this->authorRepository->createAuthor($request , $image);
+        $success = $this->authorRepository->create($request , $image);
         if($success) {
             return response()->json(['message' => "Author create successfully."]);
         }
@@ -47,7 +46,7 @@ class AuthorController extends Controller
     public function update(AuthorUpdateRequest $request , $id)
     {
         $image = $this->imageService->upload($request->file('image'));
-        $success = $this->authorRepository->updateAuthor($request,$image,$id);
+        $success = $this->authorRepository->update($request,$image,$id);
         if($success){
             return response()->json(['message' => "Author update successfully."]);
         }
@@ -57,8 +56,8 @@ class AuthorController extends Controller
     /**
      * delete author
      */
-    public function delete($id) {
-        $success = $this->authorRepository->deleteAuthor($id);
+    public function destroy($id) {
+        $success = $this->authorRepository->destroy($id);
         if($success){
             return response()->json(['message'=>'Author delete successfully.']);
         }
