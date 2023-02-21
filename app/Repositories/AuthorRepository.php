@@ -2,27 +2,28 @@
 
 namespace App\Repositories;
 
-use Throwable;
+use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\AuthorResource;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Events\TransactionRolledBack;
+use Throwable;
 
 class AuthorRepository
 {
     /**
      * get author
      */
-    public function index() {
-        $author = Author::paginate(10);
+    public function index()
+    {
+        $author = Author::with('image')->paginate(10);
         return AuthorResource::collection($author);
     }
 
     /**
      * create author
      */
-    public function create($data,$image) {
+    public function create($data, $image)
+    {
         DB::beginTransaction();
         try {
             $author = Author::create([
@@ -30,11 +31,10 @@ class AuthorRepository
                 'email' => $data->email,
                 'description' => $data->description,
             ]);
-            $author->image()->save($image);  
+            $author->image()->save($image);
             DB::commit();
             return true;
-        }
-        catch(\Throwable $e) {
+        } catch (\Throwable$e) {
             DB::rollback();
             abort(500);
         }
@@ -43,7 +43,7 @@ class AuthorRepository
     /**
      * update author
      */
-    public function update($data , $image , $id) 
+    public function update($data, $image, $id)
     {
         $author = Author::findOrFail($id);
         DB::beginTransaction();
@@ -53,17 +53,16 @@ class AuthorRepository
                 'email' => $data->email,
                 'description' => $data->description,
             ]);
-            
+
             $oldimage = $author->image;
-            if($oldimage){
+            if ($oldimage) {
                 $oldimage->delete();
                 Storage::delete($oldimage->path);
             }
             $author->image()->save($image);
             DB::commit();
             return true;
-        }
-        catch(Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollback();
             abort(500);
         }

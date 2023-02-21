@@ -35,7 +35,7 @@ class CategoryController extends Controller
         $this->categoryRepository->destroy($id);
         
         return response()->json([
-            'message' => 'A category delete successfully'
+            'message' => 'The category delete successfully'
         ], 200);
     }
 
