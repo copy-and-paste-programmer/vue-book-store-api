@@ -8,7 +8,7 @@ use App\Http\Resources\BookResource;
 use App\Repositories\BookRepository;
 
 class BookController extends Controller
-{   
+{
     protected $bookRepository;
 
     public function __construct(BookRepository $bookRepository)
@@ -44,8 +44,8 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        $createdBook =  $this->bookRepository->store($request);
-        return new BookResource($createdBook);
+        $newBook =  $this->bookRepository->store($request);
+        return new BookResource($newBook);
     }
 
     /**
@@ -56,8 +56,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-       $showBook = $this->bookRepository->show($id);
-       return new BookResource($showBook);
+        $book = $this->bookRepository->show($id);
+        return new BookResource($book);
     }
 
     /**
@@ -80,8 +80,8 @@ class BookController extends Controller
      */
     public function update(BookRequest $request, $id)
     {
-        $updatedBook = $this->bookRepository->update($request,$id);
-        return new BookResource($updatedBook);
+        $book = $this->bookRepository->update($request, $id);
+        return new BookResource($book);
     }
 
     /**
@@ -93,8 +93,6 @@ class BookController extends Controller
     public function destroy($id)
     {
         $this->bookRepository->destroy($id);
-        return response()->json([
-            'message' => 'The book delete successfully',
-        ], 200);
+        return response()->json(['message' => 'The book is deleted.',], 200);
     }
 }
