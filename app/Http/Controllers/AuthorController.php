@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\AuthorRequest;
 use App\Repositories\AuthorRepository;
 use App\Http\Requests\AuthorUpdateRequest;
-use App\Services\ImageService;
+use App\Http\Resources\AuthorResource;
+
 class AuthorController extends Controller
 {
     private $authorRepository;
 
-    private $imageService;
-
-    public function __construct(AuthorRepository $authorRepository , ImageService $imageService) {
+    public function __construct(AuthorRepository $authorRepository)
+    {
         $this->authorRepository = $authorRepository;
-        $this->imageService = $imageService;
     }
 
     /**
@@ -24,43 +22,33 @@ class AuthorController extends Controller
     public function index()
     {
         $authors =  $this->authorRepository->index();
-        return response()->json($authors);
+        return AuthorResource::collection($authors);
     }
 
     /**
      * create author
      */
-    public function create(AuthorRequest $request) 
+    public function create(AuthorRequest $request)
     {
-        $image = $this->imageService->upload($request->file('image'));
-        $success = $this->authorRepository->create($request , $image);
-        if($success) {
-            return response()->json(['message' => "Author create successfully."]);
-        }
-        return response()->json(['code'=>404,'message'=>"Can't create author."], 404);
+        $author = $this->authorRepository->create($request);
+        return new AuthorResource($author);
     }
 
     /**
      * update author
      */
-    public function update(AuthorUpdateRequest $request , $id)
+    public function update(AuthorUpdateRequest $request, $id)
     {
-        $image = $this->imageService->upload($request->file('image'));
-        $success = $this->authorRepository->update($request,$image,$id);
-        if($success){
-            return response()->json(['message' => "Author update successfully."]);
-        }
-        return response()->json(['code' => 404,'message'=>"Can't update author."]);
+        $author = $this->authorRepository->update($request, $id);
+        return new AuthorResource($author);
     }
 
     /**
      * delete author
      */
-    public function destroy($id) {
-        $success = $this->authorRepository->destroy($id);
-        if($success){
-            return response()->json(['message'=>'Author delete successfully.']);
-        }
-        return response()->json(['message'=>"Can't delete author."]);
+    public function destroy($id)
+    {
+        $this->authorRepository->destroy($id);
+        return response()->json(['message' => 'The author is deleted.'], 200);
     }
 }

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UploadController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\UploadController;
-use App\Http\Controllers\CategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +29,11 @@ Route::get('/hello', function () {
 });
 
 //Author
-Route::group(['prefix'=>'authors'],function(){
-    Route::get('/' , [AuthorController::class , 'index']);
-    Route::post('/' , [AuthorController::class , 'create']);
-    Route::put('/{id}' , [AuthorController::class , 'update']);
-    Route::delete('/{id}' , [AuthorController::class , 'destroy']);
+Route::group(['prefix' => 'authors'], function () {
+    Route::get('/', [AuthorController::class, 'index']);
+    Route::post('/', [AuthorController::class, 'create']);
+    Route::put('/{id}', [AuthorController::class, 'update']);
+    Route::delete('/{id}', [AuthorController::class, 'destroy']);
 });
 
 
@@ -41,7 +43,15 @@ Route::post('/categories/store', [CategoryController::class, 'store']);
 Route::put('/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
+// Book
+Route::get('/books', [BookController::class, 'index']);
+Route::post('/books', [BookController::class, 'store']);
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::put('/books/{id}', [BookController::class, 'update']);
+Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
 
 Route::prefix('upload')->name('upload.')->controller(UploadController::class)->group(function () {
     Route::post('images', 'images')->name('images');
 });
+
