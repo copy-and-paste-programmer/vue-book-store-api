@@ -47,7 +47,8 @@ class AuthorRepository
             $author->image()->save($image);
             DB::commit();
             return true;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
+            Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
             DB::rollback();
             abort(500);
         }
@@ -75,8 +76,8 @@ class AuthorRepository
             }
 
             DB::commit();
-            return true;
         } catch (Throwable $e) {
+            Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
             DB::rollback();
             abort(500);
         }
@@ -87,13 +88,14 @@ class AuthorRepository
      */
     public function destroy($id)
     {
-        $author = Author::findOrFail($id);
+        $author = Author::with(['image'])->findOrFail($id);
 
         DB::beginTransaction();
 
         try {
             $author->image()->delete();
             $author->delete();
+            Storage::delete($author->image->path);
 
             DB::commit();
         } catch (Throwable $e) {

@@ -1,21 +1,11 @@
 <?php
 
-<<<<<<< HEAD
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UploadController;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\BookController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
-=======
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
->>>>>>> fa430f8abd53fc97003d85c62b5bac5fed6616c3
 
 /*
 |--------------------------------------------------------------------------
@@ -44,10 +34,6 @@ Route::group(['prefix' => 'authors'], function () {
     Route::delete('/{id}', [AuthorController::class, 'destroy']);
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> fa430f8abd53fc97003d85c62b5bac5fed6616c3
 // Category
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::post('/categories/store', [CategoryController::class, 'store']);
@@ -64,7 +50,3 @@ Route::delete('/books/{id}', [BookController::class, 'destroy']);
 Route::prefix('upload')->name('upload.')->controller(UploadController::class)->group(function () {
     Route::post('images', 'images')->name('images');
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> fa430f8abd53fc97003d85c62b5bac5fed6616c3
