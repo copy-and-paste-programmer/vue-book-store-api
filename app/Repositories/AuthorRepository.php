@@ -44,10 +44,6 @@ class AuthorRepository
             DB::commit();
             return $author;
         } catch (Throwable $e) {
-            $author->image()->save($image);
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
             Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
             DB::rollback();
             abort(500);
