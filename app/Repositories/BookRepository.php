@@ -46,9 +46,7 @@ class BookRepository
         } catch (Throwable $th) {
             Storage::delete($image);
             DB::rollBack();
-            return response()->json([
-                'message' => 'Book stores failed',
-            ], 500);
+            return abort(500, 'Book stores failed');
         }
     }
 
@@ -84,10 +82,8 @@ class BookRepository
         } catch (Throwable $th) {
             Storage::delete($image);
             DB::rollBack();
-
-            return response()->json([
-                'message' => 'Book update failed',
-            ], 500);
+            
+            return abort(500, 'Book update failed');
         }
     }
 
