@@ -51,7 +51,6 @@ class BookRepository
 
             return $book;
         } catch (Throwable $e) {
-
             Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
 
             Storage::delete($image?->path);
@@ -69,7 +68,7 @@ class BookRepository
 
     public function update(Request $request, $id)
     {
-        $book = Book::findOrFail($id);
+        $book = Book::with(['image'])->findOrFail($id);
 
         $data = $request->only(
             [
@@ -83,20 +82,18 @@ class BookRepository
             ]
         );
 
-
         DB::beginTransaction();
 
         try {
             $book->query()->update($data);
+            $book->categories()->sync($request->categories);
 
             if ($request->hasFile('image')) {
-                Storage::delete($book->image->path);
                 $book->image()->delete();
                 $image = $this->imageService->upload($request->file('image'));
                 $book->image()->save($image);
+                Storage::delete($book->image->path);
             }
-
-            $book->categories()->sync($request->categories);
 
             DB::commit();
 
@@ -117,17 +114,16 @@ class BookRepository
     public function destroy($id)
     {
         $book = Book::with(['image'])->findOrFail($id);
-        $path = $book->image->path;
 
         DB::beginTransaction();
 
         try {
             $book->image()->delete();
             $book->delete();
+            Storage::delete($book->image->path);
 
             DB::commit();
         } catch (Throwable $e) {
-
             Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
 
             DB::rollBack();
@@ -135,6 +131,6 @@ class BookRepository
             abort(500, 'The book is not deleted.');
         }
 
-        Storage::delete($path);
+
     }
 }
