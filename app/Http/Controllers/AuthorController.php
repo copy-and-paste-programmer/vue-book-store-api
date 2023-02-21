@@ -19,12 +19,20 @@ class AuthorController extends Controller
         $this->imageService = $imageService;
     }
 
-    public function getAuthor(){
+    /**
+     * get author
+     */
+    public function getAuthor()
+    {
         $authors =  $this->authorRepository->getAuthor();
         return response()->json($authors);
     }
 
-    public function create(AuthorRequest $request) {
+    /**
+     * create author
+     */
+    public function create(AuthorRequest $request) 
+    {
         $image = $this->imageService->upload($request->file('image'));
         $success = $this->authorRepository->createAuthor($request , $image);
         if($success) {
@@ -33,10 +41,27 @@ class AuthorController extends Controller
         return response()->json(['code'=>404,'message'=>"Can't create author."], 404);
     }
 
-    public function update(AuthorUpdateRequest $request){
-        $success = $this->authorRepository->updateAuthor($request);
-        // if($success){
+    /**
+     * update author
+     */
+    public function update(AuthorUpdateRequest $request , $id)
+    {
+        $image = $this->imageService->upload($request->file('image'));
+        $success = $this->authorRepository->updateAuthor($request,$image,$id);
+        if($success){
+            return response()->json(['message' => "Author update successfully."]);
+        }
+        return response()->json(['code' => 404,'message'=>"Can't update author."]);
+    }
 
-        // }
+    /**
+     * delete author
+     */
+    public function delete($id) {
+        $success = $this->authorRepository->deleteAuthor($id);
+        if($success){
+            return response()->json(['message'=>'Author delete successfully.']);
+        }
+        return response()->json(['message'=>"Can't delete author."]);
     }
 }

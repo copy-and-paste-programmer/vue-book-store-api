@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AuthorUpdateRequest extends FormRequest
@@ -25,9 +26,9 @@ class AuthorUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email|email:rfc,filter|regex:/(.+)@(.+)\.(.+)/i',
+            'email' => ['required','email','email:rfc,filter','regex:/(.+)@(.+)\.(.+)/i',Rule::unique('authors','email')->ignore('id')],
             'description' => 'required',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif'
+            'image' => 'required|mimes:jpeg,png,jpg,gif'
         ];
     }
 }

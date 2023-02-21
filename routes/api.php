@@ -26,9 +26,14 @@ Route::get('/hello', function () {
     return response('hello');
 });
 
-Route::get('/author/list' , [AuthorController::class , 'getAuthor']);
+//Author
+Route::group(['prefix'=>'author'],function(){
+    Route::get('/list' , [AuthorController::class , 'getAuthor']);
+    Route::post('/create' , [AuthorController::class , 'create']);
+    Route::put('/edit/{id}' , [AuthorController::class , 'update']);
+    Route::delete('/delete/{id}' , [AuthorController::class , 'delete']);
+});
 
-Route::post('/author/create' , [AuthorController::class , 'create']);
 
 // Category
 Route::get('/categories', [CategoryController::class, 'index']);
