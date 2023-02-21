@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorRequest;
 use App\Http\Requests\AuthorUpdateRequest;
+use App\Http\Resources\AuthorResource;
 use App\Repositories\AuthorRepository;
 use App\Services\ImageService;
 
@@ -25,7 +26,8 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = $this->authorRepository->index();
-        return response()->json($authors);
+        // return response()->json($authors);
+        return AuthorResource::collection($authors);
     }
 
     /**

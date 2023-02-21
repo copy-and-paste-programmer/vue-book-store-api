@@ -15,8 +15,7 @@ class AuthorRepository
      */
     public function index()
     {
-        $author = Author::with('image')->paginate(10);
-        return AuthorResource::collection($author);
+        return Author::with('image')->paginate(10);
     }
 
     /**
