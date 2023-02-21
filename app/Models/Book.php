@@ -48,7 +48,7 @@ class Book extends Model
                     $query->where('name' , 'LIKE' , '%'.$search.'%');
                   })
                   ->orWhere('publisher' , 'LIKE' , '%'.$search.'%')
-                  ->orWhere('price' , 'LIKE' , '%'.$search.'%');
+                  ->orWhere('price' , $search);
         });
     }
 }
