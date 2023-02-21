@@ -27,7 +27,7 @@ class AuthorRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email|email:rfc,filter|regex:/(.+)@(.+)\.(.+)/i|unique:authors',
             'description' => 'required',
-            'image' => 'required|mimes:jpeg,png,jpg,gif'
+            'image' => 'required|mimes:jpeg,png,jpg,gif',
         ];
     }
 }

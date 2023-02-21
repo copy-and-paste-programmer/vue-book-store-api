@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use Throwable;
 use App\Models\Author;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class AuthorRepository
 {
@@ -23,13 +23,13 @@ class AuthorRepository
      */
     public function index()
     {
-        return Author::with(['image'])->paginate(10);
+        return Author::with('image')->paginate(10);
     }
 
     /**
      * create author
      */
-    public function create(Request $request)
+    public function create($request)
     {
         DB::beginTransaction();
 
@@ -44,6 +44,10 @@ class AuthorRepository
             DB::commit();
             return $author;
         } catch (Throwable $e) {
+            $author->image()->save($image);
+            DB::commit();
+            return true;
+        } catch (\Throwable $e) {
             DB::rollback();
             abort(500);
         }
@@ -64,17 +68,15 @@ class AuthorRepository
             ]);
 
             if ($request->hasFile('image')) {
-                $image = $this->imageService->upload($request->file('image'));
+                $image = $this->imageService->upload($request->file('image', 'author'));
                 $author->image()->save($image);
                 $author->image->delete();
                 Storage::delete($author->image->path);
             }
 
             DB::commit();
-
-            return $author;
+            return true;
         } catch (Throwable $e) {
-            Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
             DB::rollback();
             abort(500);
         }
