@@ -20,9 +20,9 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $allBooks = $this->bookRepository->index();
+        $allBooks = $this->bookRepository->index($request);
         return BookResource::collection($allBooks);
     }
 

@@ -33,4 +33,22 @@ class Book extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    /**
+     * search function
+     */
+    public function scopeFilter($query , $filter)
+    {
+        $query->when($filter ?? false , function ($query , $search) {
+            $query->where('name' , 'LIKE' , '%'.$search.'%')
+                  ->orWhereHas('author' , function ($query) use ($search){
+                    $query->where('name' , 'LIKE' , '%'.$search.'%');
+                  })
+                  ->orWhereHas('categories' , function ($query) use ($search){
+                    $query->where('name' , 'LIKE' , '%'.$search.'%');
+                  })
+                  ->orWhere('publisher' , 'LIKE' , '%'.$search.'%')
+                  ->orWhere('price' , 'LIKE' , '%'.$search.'%');
+        });
+    }
 }
