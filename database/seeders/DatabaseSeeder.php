@@ -25,5 +25,12 @@ class DatabaseSeeder extends Seeder
         // $this->call([
         //     Author::class
         // ]);
+
+        $this->call(
+            [
+                UserSeeder::class,
+                RolePermissionSeeder::class,
+            ]
+            );
     }
 }
