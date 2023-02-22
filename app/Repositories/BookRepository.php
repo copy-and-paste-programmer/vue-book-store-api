@@ -135,11 +135,13 @@ class BookRepository
     }
 
     public function rate(Request $request, $id)
-    {   
+    {
         DB::beginTransaction();
 
         try {
-            $userBookRating = BookRating::where('book_id', $id)->where('user_id', Auth::user()->id)->first();
+            $userBookRating = BookRating::where('book_id', $id)
+                ->where('user_id', $request->user()->id)->first();
+
             $book = Book::where('id', $id)->first();
 
             if ($userBookRating) {
@@ -158,29 +160,27 @@ class BookRepository
             }
 
             $book->increment('star' . $request->star . '_count', 1);
-        
+
             $star1 = $book->star1_count;
             $star2 = $book->star2_count;
             $star3 = $book->star3_count;
             $star4 = $book->star4_count;
             $star5 = $book->star5_count;
-            $totalCount = $star1 + $star2 + $star3 + $star4 + $star5 ;
 
-            $averageRating = ($star1 + 2*$star2 + 3*$star3 + 4*$star4 + 5*$star5) / $totalCount;
+            $totalCount = $star1 + $star2 + $star3 + $star4 + $star5;
+            $averageRating = ($star1 + 2 * $star2 + 3 * $star3 + 4 * $star4 + 5 * $star5) / $totalCount;
 
             Book::where('id', $id)->update([
                 'average_rating' => round($averageRating),
             ]);
 
             DB::commit();
-        }  
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
 
             DB::rollBack();
 
             abort(500, 'The book rating failed');
         }
-        
     }
 }
