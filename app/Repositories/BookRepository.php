@@ -19,9 +19,12 @@ class BookRepository
         $this->imageService = $imageService;
     }
 
-    public function index()
+    public function index($request)
     {
-        return Book::with(['image', 'categories', 'author'])->paginate(10);
+        $search = $request->search;
+        return Book::with(['image', 'categories', 'author'])
+                    ->filter($search)
+                    ->paginate(10);
     }
 
     public function store(Request $request)
