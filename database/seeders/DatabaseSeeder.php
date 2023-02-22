@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Author;
 use Illuminate\Database\Seeder;
+use Database\Seeders\BookSeeder;
+use Database\Seeders\AuthorSeeder;
+use Database\Seeders\CategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,8 +24,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $this->call([
-        //     Author::class
-        // ]);
+        $this->call([
+            AuthorSeeder::class,
+            CategorySeeder::class,
+            BookSeeder::class,
+        ]);
     }
 }
