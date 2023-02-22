@@ -18,6 +18,7 @@ class ImageService
         return new Image([
             'disk' => config('filesystems.default'),
             'path' => $uploadPath,
+            'url'  => Storage::url($uploadPath),
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
         ]);
