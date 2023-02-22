@@ -46,6 +46,8 @@ Route::post('/books', [BookController::class, 'store']);
 Route::get('/books/{id}', [BookController::class, 'show']);
 Route::put('/books/{id}', [BookController::class, 'update']);
 Route::delete('/books/{id}', [BookController::class, 'destroy']);
+Route::get('/books-year' , [BookController::class , 'years']);
+Route::get('/books-of-year/{year}' , [BookController::class , 'booksOfYear']);
 
 Route::prefix('upload')->name('upload.')->controller(UploadController::class)->group(function () {
     Route::post('images', 'images')->name('images');

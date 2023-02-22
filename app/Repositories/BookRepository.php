@@ -133,7 +133,35 @@ class BookRepository
 
             abort(500, 'The book is not deleted.');
         }
+    }
 
+    public function years()
+    {
+        $LastYear = config('constants.LAST_YEAR');
+        $currentYear = date('Y');
+        $lastNumberOfYear = substr($currentYear, 3);
+        $decadeYear = $currentYear - $lastNumberOfYear;
+        $years = [];
+        $firstArr = [];
+        if ($lastNumberOfYear <= 3) {
+            for ($currentYear; $currentYear > $decadeYear; $currentYear--) {
+                array_push($firstArr , $currentYear);
+            }
+        }
+        else {
+            for ($currentYear; $currentYear > $decadeYear+$decadeYear; $currentYear--) {
+                array_push($firstArr , $currentYear);
+            }
+        }
+        for ($decadeYear; $decadeYear >= $LastYear; $decadeYear-=10) {
+            array_push($years, $decadeYear);
+        }
+        return array_merge($firstArr , $years);
+    }
 
+    public function booksOfYear($year)
+    {
+        $books = Book::whereYear('published_at' , $year)->get();
+        return $books;
     }
 }

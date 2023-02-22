@@ -3,20 +3,20 @@
 namespace App\Models;
 
 use App\Models\Image;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
+    protected $fillable = [
         'name',
         'price',
         'description',
         'author_id',
         'publisher',
-        'published_at'
+        'published_at',
     ];
 
     public function categories()
@@ -37,18 +37,18 @@ class Book extends Model
     /**
      * search function
      */
-    public function scopeFilter($query , $filter)
+    public function scopeFilter($query, $filter)
     {
-        $query->when($filter ?? false , function ($query , $search) {
-            $query->where('name' , 'LIKE' , '%'.$search.'%')
-                  ->orWhereHas('author' , function ($query) use ($search){
-                    $query->where('name' , 'LIKE' , '%'.$search.'%');
-                  })
-                  ->orWhereHas('categories' , function ($query) use ($search){
-                    $query->where('name' , 'LIKE' , '%'.$search.'%');
-                  })
-                  ->orWhere('publisher' , 'LIKE' , '%'.$search.'%')
-                  ->orWhere('price' , $search);
+        $query->when($filter ?? false, function ($query, $search) {
+            $query->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('author', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhereHas('categories', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhere('publisher', 'LIKE', '%' . $search . '%')
+                ->orWhere('price', $search);
         });
     }
 }

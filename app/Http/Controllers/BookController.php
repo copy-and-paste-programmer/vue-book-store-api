@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
 use App\Repositories\BookRepository;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -44,7 +44,7 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        $newBook =  $this->bookRepository->store($request);
+        $newBook = $this->bookRepository->store($request);
         return new BookResource($newBook);
     }
 
@@ -94,5 +94,20 @@ class BookController extends Controller
     {
         $this->bookRepository->destroy($id);
         return response()->json(['message' => 'The book is deleted.'], 200);
+    }
+
+    /**
+     * get years for home screen
+     */
+    public function years()
+    {
+        $years = $this->bookRepository->years();
+        return response()->json($years);
+    }
+
+    public function booksOfYear($year)
+    {
+        $books = $this->bookRepository->booksOfYear($year);
+        return response()->json($books);
     }
 }
