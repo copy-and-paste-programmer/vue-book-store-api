@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
-use Throwable;
 use App\Models\Book;
-use Illuminate\Http\Request;
+use App\Models\BookRating;
 use App\Services\ImageService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class BookRepository
 {
@@ -34,7 +36,7 @@ class BookRepository
                 'description',
                 'author_id',
                 'publisher',
-                'published_at'
+                'published_at',
             ]
         );
 
@@ -78,7 +80,7 @@ class BookRepository
                 'description',
                 'author_id',
                 'publisher',
-                'published_at'
+                'published_at',
             ]
         );
 
@@ -130,7 +132,55 @@ class BookRepository
 
             abort(500, 'The book is not deleted.');
         }
+    }
 
+    public function rate(Request $request, $id)
+    {   
+        DB::beginTransaction();
 
+        try {
+            $userBookRating = BookRating::where('book_id', $id)->where('user_id', Auth::user()->id)->first();
+            $book = Book::where('id', $id)->first();
+
+            if ($userBookRating) {
+                $oldRating = $userBookRating->rating;
+                $book->decrement('star' . $oldRating . '_count', 1);
+
+                $userBookRating->update([
+                    'rating' => $request->star,
+                ]);
+            } else {
+                BookRating::create([
+                    'book_id' => $id,
+                    'user_id' => Auth::user()->id,
+                    'rating' => $request->star,
+                ]);
+            }
+
+            $book->increment('star' . $request->star . '_count', 1);
+        
+            $star1 = $book->star1_count;
+            $star2 = $book->star2_count;
+            $star3 = $book->star3_count;
+            $star4 = $book->star4_count;
+            $star5 = $book->star5_count;
+            $totalCount = $star1 + $star2 + $star3 + $star4 + $star5 ;
+
+            $averageRating = ($star1 + 2*$star2 + 3*$star3 + 4*$star4 + 5*$star5) / $totalCount;
+
+            Book::where('id', $id)->update([
+                'average_rating' => round($averageRating),
+            ]);
+
+            DB::commit();
+        }  
+        catch (Throwable $e) {
+            Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
+
+            DB::rollBack();
+
+            abort(500, 'The book rating failed');
+        }
+        
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRatingRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
@@ -94,5 +95,11 @@ class BookController extends Controller
     {
         $this->bookRepository->destroy($id);
         return response()->json(['message' => 'The book is deleted.'], 200);
+    }
+
+    public function rate(BookRatingRequest $request, $id)
+    {   
+        $this->bookRepository->rate($request,$id);
+        return response()->json(['message' => 'The book rating successfully'], 200);
     }
 }

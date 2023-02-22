@@ -46,6 +46,7 @@ Route::post('/books', [BookController::class, 'store']);
 Route::get('/books/{id}', [BookController::class, 'show']);
 Route::put('/books/{id}', [BookController::class, 'update']);
 Route::delete('/books/{id}', [BookController::class, 'destroy']);
+Route::post('/books/rating/{id}',[BookController::class, 'rate']);
 
 Route::prefix('upload')->name('upload.')->controller(UploadController::class)->group(function () {
     Route::post('images', 'images')->name('images');
