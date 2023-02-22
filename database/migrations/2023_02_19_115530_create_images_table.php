@@ -18,6 +18,7 @@ return new class extends Migration
             $table->morphs('imageable');
             $table->string('disk')->default('local');
             $table->string('path');
+            $table->string('url');
             $table->unsignedBigInteger('size');
             $table->string('mime_type');
             $table->timestamps();
