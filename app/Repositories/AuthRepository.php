@@ -4,29 +4,23 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Throwable;
+use Illuminate\Support\Facades\Hash;
 
 class AuthRepository
 {
-    public function register(Request $request)
+    public function authenticated(Request $request)
     {
-        $data = $request->only(['name', 'email', 'password']);
-        DB::beginTransaction();
-        try {
+        $user = User::where('email', $request->email)->first();
 
-            $user = User::create($data);
-            $token = $user->createToken('Book-Store-Api')->accessToken;
-
-            DB::commit();
-
-            return [
-                'user' => $user->toArray(),
-                'access_token' => $token
-            ];
-        } catch (Throwable $e) {
-            DB::rollBack();
-            abort(500, $e->getMessage());
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            abort(401, 'Your email or password is wrong.');
         }
+
+        $token = $user->createToken($user->email)->accessToken;
+
+        return [
+            'user' => $user->toArray(),
+            'access_token' => $token,
+        ];
     }
 }

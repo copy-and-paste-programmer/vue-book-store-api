@@ -17,19 +17,17 @@ class RegisterRepository
         try {
 
             $user = User::create($data);
-            $token = $user->createToken('Book-Store-Api')->accessToken;
 
             DB::commit();
 
             return [
                 'user' => $user->toArray(),
-                'access_token' => $token
+                'message' => "We have sent email to confirm your account.Please check your email"
             ];
-
         } catch (Throwable $e) {
             Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
             DB::rollBack();
-            abort(500, $e->getMessage());
+            abort(500, 'Account Registration is failed.');
         }
     }
 }
