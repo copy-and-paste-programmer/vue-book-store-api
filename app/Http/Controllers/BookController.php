@@ -21,9 +21,9 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $allBooks = $this->bookRepository->index();
+        $allBooks = $this->bookRepository->index($request);
         return BookResource::collection($allBooks);
     }
 
@@ -98,7 +98,7 @@ class BookController extends Controller
     }
 
     public function rate(BookRatingRequest $request, $id)
-    {   
+    {
         $this->bookRepository->rate($request,$id);
         return response()->json(['message' => 'The book rating successfully'], 200);
     }

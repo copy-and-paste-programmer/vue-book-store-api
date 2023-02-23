@@ -22,7 +22,9 @@ class BookResource extends JsonResource
             'publisher' => $this->publisher,
             'author' => new AuthorResource($this->whenLoaded('author')),
             'image' => new ImageResource($this->whenLoaded('image')),
-            'categories' => CategoryResource::collection($this->whenLoaded('categories'))
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
+            'average_rating' => $this->average_rating,
+            'created_at' => $this->created_at,
         ];
     }
 }
