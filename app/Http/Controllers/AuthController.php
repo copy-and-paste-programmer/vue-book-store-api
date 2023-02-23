@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
+use Laravel\Passport\Client;
+use App\Repositories\AuthRepository;
+use Illuminate\Support\Facades\Route;
+use Throwable;
 
 class AuthController extends Controller
 {
