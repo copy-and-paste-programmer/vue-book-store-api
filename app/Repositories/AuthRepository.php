@@ -14,11 +14,9 @@ class AuthRepository
 {
     public function authenticated(Request $request)
     {
-        $user = User::with(['image'])->where('email', $request->email)->first();
         $token = $this->getToken($request);
-
-        return $token;
-
+        $token->user = User::with(['image'])->where('email', $request->email)->first();
+        return response()->json($token, 200);
     }
 
     private function getToken(Request $request)
@@ -38,7 +36,7 @@ class AuthRepository
             $tokenRequest = $request->create('http://localhost:8000/oauth/token', method:'POST');
 
             $response = Route::dispatch($tokenRequest);
-            
+
             if ($response->getStatusCode() !== 200) {
                 abort($response->getStatusCode(), $response->getContent());
             }
