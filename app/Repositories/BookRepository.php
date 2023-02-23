@@ -160,8 +160,21 @@ class BookRepository
     }
 
     public function booksOfYear($year)
-    {
-        $books = Book::whereYear('published_at' , $year)->get();
-        return $books;
+    {   
+        $years = [];
+        $endOfThisYear = $year - 9;
+        if (substr($year,3) == 0) {
+            for ($year; $year >= $endOfThisYear; $year--) {
+                $years[] = $year;
+            }
+            foreach($years as $year){
+                $books = Book::whereYear('published_at' , $year)->get();
+            }
+            return $books;
+        }
+        else {
+            $books = Book::whereYear('published_at' , $year)->get();
+            return $books;
+        }
     }
 }
