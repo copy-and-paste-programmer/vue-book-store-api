@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
@@ -27,7 +28,7 @@ Route::get('/hello', function () {
     return response('hello');
 });
 
-Route::middleware([])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     //Author
     Route::group(['prefix' => 'authors'], function () {
         Route::get('/', [AuthorController::class, 'index']);
@@ -48,6 +49,8 @@ Route::middleware([])->group(function () {
     Route::get('/books/{id}', [BookController::class, 'show']);
     Route::put('/books/{id}', [BookController::class, 'update']);
     Route::delete('/books/{id}', [BookController::class, 'destroy']);
-    Route::post('/rating/books/{id}',[BookController::class, 'rate']);
+    Route::post('/rating/books/{id}', [BookController::class, 'rate']);
 });
 
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [AuthController::class, 'authenticated']);

@@ -16,8 +16,7 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $data = $this->registerRepository->register($request);
-
-        return response()->json($data, 200);
+        $this->registerRepository->register($request);
+        return response()->json(['message' => 'Register Successfully'], 200);
     }
 }
