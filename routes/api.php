@@ -48,8 +48,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/books/{id}', [BookController::class, 'show']);
     Route::put('/books/{id}', [BookController::class, 'update']);
     Route::delete('/books/{id}', [BookController::class, 'destroy']);
+    Route::post('/books/rating/{id}',[BookController::class, 'rate']);
 });
 
-Route::controller(RegisterController::class)->group(function(){
-    Route::get('/register', 'register');
-});

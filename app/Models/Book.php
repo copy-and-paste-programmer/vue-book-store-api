@@ -33,4 +33,9 @@ class Book extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function rating()
+    {
+        return $this->hasMany(BookRating::class);
+    }
 }
