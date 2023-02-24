@@ -60,8 +60,6 @@ class AuthRepository
             payload: $payload
         );
 
-        $data->user = User::with(['image'])->where('email', $request->email)->first();
-
         return $data;
     }
 }
