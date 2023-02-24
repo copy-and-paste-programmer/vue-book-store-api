@@ -3,49 +3,65 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use Error;
+use App\Services\AuthenticationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Client;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class AuthRepository
 {
-    public function authenticated(Request $request)
+    private $authenticationService;
+
+    public function __construct(AuthenticationService $authenticationService)
     {
-        $token = $this->getToken($request);
-        $token->user = User::with(['image'])->where('email', $request->email)->first();
-        return response()->json($token, 200);
+        $this->authenticationService = $authenticationService;
     }
 
-    private function getToken(Request $request)
+    public function authenticated(Request $request) :object
     {
-        try {
-            $client = Client::where('id', 2)->first();
+        $client = Client::where('id', 2)->first();
 
-            $request->request->add([
-                'grant_type' => 'password',
-                'client_id' => $client->id,
-                'client_secret' => $client->secret,
-                'username' => $request->email,
-                'password' => $request->password,
-                'scope' => '*',
-            ]);
+        $payload = [
+            'grant_type' => 'password',
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'username' => $request->email,
+            'password' => $request->password,
+            'scope' => '*'
+        ];
 
-            $tokenRequest = $request->create('http://localhost:8000/oauth/token', method:'POST');
+        $data = $this->authenticationService->httpPost(
+            http: $request,
+            uri: 'http://localhost:8000/oauth/token',
+            payload: $payload
+        );
 
-            $response = Route::dispatch($tokenRequest);
+        $data->user = User::with(['image'])->where('email', $request->email)->first();
 
-            if ($response->getStatusCode() !== 200) {
-                abort($response->getStatusCode(), $response->getContent());
-            }
+        return $data;
+    }
 
-            return json_decode($response->getContent());
+    public function refresh(Request $request) : object
+    {
+        $client = Client::where('id', 2)->first();
+        $refreshToken = $request->cookie('refresh_token') ?? $request->bearerToken();
 
-        } catch (HttpException $e) {
-            Log::error(__FILE__ . '::' . __CLASS__ . '::' . __FUNCTION__ . '=>' . $e->getMessage());
-            abort($e->getStatusCode(), 'Login Failed');
-        }
+        $payload = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' =>  $refreshToken,
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+            'scope' => '*',
+        ];
+
+        $data = $this->authenticationService->httpPost(
+            http: $request,
+            uri: 'http://localhost:8000/oauth/token',
+            payload: $payload
+        );
+
+        $data->user = User::with(['image'])->where('email', $request->email)->first();
+
+        return $data;
     }
 }

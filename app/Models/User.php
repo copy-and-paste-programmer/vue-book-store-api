@@ -61,7 +61,7 @@ class User extends Authenticatable
      * this method is overide to laravel passport package
      */
     public function findAndValidateForPassport($email, $password)
-    {   
+    {
         $user = User::where('email', $email)->first();
 
         if (!$user || !Hash::check($password, $user->password)) {

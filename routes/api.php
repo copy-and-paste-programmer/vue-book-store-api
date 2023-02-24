@@ -48,8 +48,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/books/{id}', [BookController::class, 'show']);
     Route::put('/books/{id}', [BookController::class, 'update']);
     Route::delete('/books/{id}', [BookController::class, 'destroy']);
-    Route::post('/rating/books/{id}', [BookController::class, 'rate']);
+    Route::post('/books/rates/{id}', [BookController::class, 'rate']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [AuthController::class, 'authenticated']);
+Route::post('/refresh', [AuthController::class, 'refresh']);
