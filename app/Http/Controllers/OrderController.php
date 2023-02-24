@@ -20,9 +20,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->orderRepository->index();
+        return $this->orderRepository->index($request);
     }
 
     /**
@@ -42,8 +42,8 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
-        return $this->orderRepository->show($id);
+        return $this->orderRepository->show($request,$id);
     }
 }

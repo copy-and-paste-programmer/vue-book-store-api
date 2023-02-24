@@ -12,24 +12,26 @@ use Illuminate\Support\Facades\Log;
 
 class OrderRepository
 {
-    public function index()
+    public function index(Request $request)
     {
         return Order::query()
             ->with([
                 'orderDetail:quantity,order_id,book_id',
                 'orderDetail.book:id,name,price'
             ])
-            ->where('user_id', request()->user()->id)
+            ->where('user_id', $request->user()->id)
             ->get();
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         return Order::with([
             'orderDetail',
             'orderDetail.book',
             'orderDetail.book.image'
-        ])->findOrFail($id);
+        ])
+            ->where('user_id', $request->user()->id)
+            ->findOrFail($id);
     }
 
     public function order(Request $request)
