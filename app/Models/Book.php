@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
@@ -52,5 +53,15 @@ class Book extends Model
                 ->orWhere('publisher', 'LIKE', '%' . $search . '%')
                 ->orWhere('price', $search);
         });
+    }
+
+    /**
+     * The roles that belong to the Book
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'book_users');
     }
 }

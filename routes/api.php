@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,5 +50,8 @@ Route::middleware([])->group(function () {
     Route::put('/books/{id}', [BookController::class, 'update']);
     Route::delete('/books/{id}', [BookController::class, 'destroy']);
     Route::post('/rating/books/{id}',[BookController::class, 'rate']);
+
+    Route::post('/favorite/{user_id}/{book}' , [UserController::class , 'addToFavorite']);
+    Route::get('/favorites/{user_id}' , [UserController::class , 'favoriteBook']);
 });
 
