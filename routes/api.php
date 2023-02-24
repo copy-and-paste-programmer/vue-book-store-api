@@ -27,7 +27,7 @@ Route::get('/hello', function () {
     return response('hello');
 });
 
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware([])->group(function () {
     //Author
     Route::group(['prefix' => 'authors'], function () {
         Route::get('/', [AuthorController::class, 'index']);
