@@ -17,9 +17,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('price');
+            $table->longText('description');
             $table->foreignId('author_id')->constrained('authors')->cascadeOnDelete();
             $table->string('publisher')->default(null);
             $table->date('published_at');
+            $table->integer('star1_count')->default(0);
+            $table->integer('star2_count')->default(0);
+            $table->integer('star3_count')->default(0);
+            $table->integer('star4_count')->default(0);
+            $table->integer('star5_count')->default(0);
+            $table->integer('average_rating')->default(0);
             $table->timestamps();
         });
     }
