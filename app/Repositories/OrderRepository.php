@@ -2,16 +2,35 @@
 
 namespace App\Repositories;
 
+use Throwable;
 use App\Models\Book;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class OrderRepository
 {
+    public function index()
+    {
+        return Order::query()
+            ->with([
+                'orderDetail:quantity,order_id,book_id',
+                'orderDetail.book:id,name,price'
+            ])
+            ->where('user_id', request()->user()->id)
+            ->get();
+    }
+
+    public function show($id)
+    {
+        return Order::with([
+            'orderDetail',
+            'orderDetail.book',
+            'orderDetail.book.image'
+        ])->findOrFail($id);
+    }
 
     public function order(Request $request)
     {
@@ -46,7 +65,7 @@ class OrderRepository
                 ]);
             }
             DB::commit();
-            $order = $createdOrder->select(['id','phone_no','address','total_price','status','created_at'])->first();
+            $order = $createdOrder->select(['id', 'phone_no', 'address', 'total_price', 'status', 'created_at'])->first();
             $order->user_name = $request->user()->name;
             return [
                 'order' => $order,
@@ -59,6 +78,5 @@ class OrderRepository
 
             abort(500, 'The book order failed.');
         }
-
     }
 }

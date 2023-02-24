@@ -27,7 +27,7 @@ Route::get('/hello', function () {
     return response('hello');
 });
 
-Route::middleware([])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     //Author
     Route::group(['prefix' => 'authors'], function () {
         Route::get('/', [AuthorController::class, 'index']);
@@ -52,6 +52,8 @@ Route::middleware([])->group(function () {
 
     //Order
     Route::post('/order',[OrderController::class, 'order']);
+    Route::get('/order',[OrderController::class, 'index']);
+    Route::get('/order/{id}',[OrderController::class, 'show']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);

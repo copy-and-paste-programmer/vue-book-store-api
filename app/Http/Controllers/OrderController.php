@@ -12,8 +12,19 @@ class OrderController extends Controller
 
     public function __construct(OrderRepository $orderRepository)
     {
-        $this->orderRepository = $orderRepository;
+        return $this->orderRepository = $orderRepository;
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return $this->orderRepository->index();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -23,5 +34,16 @@ class OrderController extends Controller
     public function order(OrderRequest $request)
     {
         return $this->orderRepository->order($request);
+    }
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return $this->orderRepository->show($id);
     }
 }
