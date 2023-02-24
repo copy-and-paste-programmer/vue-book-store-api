@@ -69,4 +69,10 @@ class User extends Authenticatable
         }
         return $user;
     }
+
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

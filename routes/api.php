@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\RegisterController;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,6 +49,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('/books/{id}', [BookController::class, 'update']);
     Route::delete('/books/{id}', [BookController::class, 'destroy']);
     Route::post('/books/rates/{id}', [BookController::class, 'rate']);
+
+    //Order
+    Route::post('/order',[OrderController::class, 'order']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);
