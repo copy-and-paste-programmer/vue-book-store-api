@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
+use Laravel\Passport\Client;
+use App\Repositories\AuthRepository;
+use Illuminate\Support\Facades\Route;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -14,9 +17,28 @@ class AuthController extends Controller
         $this->authRepository = $authRepository;
     }
 
-    public function authenticated(Request $request)
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return object
+     */
+    public function authenticated(Request $request): object
     {
         $data = $this->authRepository->authenticated($request);
+
+        return response()->json($data, 200);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return object
+     */
+    public function refresh(Request $request): object
+    {
+        $data = $this->authRepository->refresh($request);
 
         return response()->json($data, 200);
     }

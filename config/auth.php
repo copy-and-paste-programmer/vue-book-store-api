@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Passport\Client;
+
 return [
 
     /*
@@ -40,6 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -64,6 +71,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' =>  Client::class,
+        ],
+
 
         // 'users' => [
         //     'driver' => 'database',
