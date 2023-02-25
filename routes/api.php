@@ -51,9 +51,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/books/rates/{id}', [BookController::class, 'rate']);
 
     //Order
-    Route::post('/order',[OrderController::class, 'order']);
-    Route::get('/order',[OrderController::class, 'index']);
-    Route::get('/order/{id}',[OrderController::class, 'show']);
+    Route::post('/orders',[OrderController::class, 'create']);
+    Route::get('/orders',[OrderController::class, 'index']);
+    Route::get('/orders/{id}',[OrderController::class, 'show']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);

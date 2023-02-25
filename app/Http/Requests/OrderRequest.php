@@ -27,7 +27,7 @@ class OrderRequest extends FormRequest
             'phone_no' => ['required'],
             'address' => ['required'],
             'books.*.id' => ['required'],
-            'books.*.qty' => ['required','numeric','min:1'],
+            'books.*.quantity' => ['required', 'numeric', 'min:1'],
         ];
     }
 }
