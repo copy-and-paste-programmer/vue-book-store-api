@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use Throwable;
 use App\Models\Book;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class OrderRepository
 {
@@ -17,7 +17,7 @@ class OrderRepository
         return Order::query()
             ->with([
                 'orderDetail:quantity,order_id,book_id',
-                'orderDetail.book:id,name,price'
+                'orderDetail.book:id,name,price',
             ])
             ->where('user_id', $request->user()->id)
             ->get();
@@ -25,10 +25,10 @@ class OrderRepository
 
     public function show(Request $request, $id)
     {
-        return Order::with([
+        return Order::query()->with([
             'orderDetail',
             'orderDetail.book',
-            'orderDetail.book.image'
+            'orderDetail.book.image',
         ])
             ->where('user_id', $request->user()->id)
             ->findOrFail($id);
@@ -51,26 +51,25 @@ class OrderRepository
         $totalPrice = $books->sum('total_price');
         DB::beginTransaction();
         try {
-            $createdOrder = Order::create([
+            $newOrder = Order::create([
                 'user_id' => $request->user()->id,
                 'phone_no' => $request->phone_no,
                 'address' => $request->address,
                 'total_price' => $totalPrice,
-                'status' => 1
+                'status' => 1,
             ]);
 
             foreach ($books as $book) {
                 OrderDetail::create([
-                    'order_id' => $createdOrder->id,
+                    'order_id' => $newOrder->id,
                     'book_id' => $book->id,
                     'quantity' => $book->qty,
                 ]);
             }
             DB::commit();
-            $order = $createdOrder->select(['id', 'phone_no', 'address', 'total_price', 'status', 'created_at'])->first();
-            $order->user_name = $request->user()->name;
+            $newOrder->user_name = $request->user()->name;
             return [
-                'order' => $order,
+                'order' => $newOrder,
                 'order_detail' => $books,
             ];
         } catch (Throwable $e) {
@@ -78,7 +77,7 @@ class OrderRepository
 
             DB::rollBack();
 
-            abort(500, 'The book order failed.');
+            abort(500, 'The order is failed.');
         }
     }
 }
