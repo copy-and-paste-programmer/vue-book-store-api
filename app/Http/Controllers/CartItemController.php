@@ -7,7 +7,7 @@ use App\Repositories\CartItemRepository;
 use Illuminate\Http\Request;
 
 class CartItemController extends Controller
-{   
+{
     protected $cartItemRepository;
 
     public function __construct(CartItemRepository $cartItemRepository)
@@ -21,7 +21,9 @@ class CartItemController extends Controller
      */
     public function index()
     {
-        return CartItemResource::collection($this->cartItemRepository->index());
+        $cartItems = $this->cartItemRepository->index();
+
+        return CartItemResource::collection($cartItems);
     }
 
     /**
@@ -31,9 +33,7 @@ class CartItemController extends Controller
      */
     public function create(Request $request)
     {
-       $newCartItem = $this->cartItemRepository->create($request);
 
-       return new CartItemResource($newCartItem);
     }
 
     /**
@@ -44,7 +44,9 @@ class CartItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newCartItem = $this->cartItemRepository->store($request);
+
+        return new CartItemResource($newCartItem);
     }
 
     /**

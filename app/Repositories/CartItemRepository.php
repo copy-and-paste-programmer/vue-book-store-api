@@ -23,12 +23,7 @@ class CartItemRepository
      */
     public function create(Request $request)
     {
-        $cartItem = $request->only(['book_id', 'quantity']);
-        $cartItem['user_id'] = $request->user()->id;
-        $newCartItem = CartItem::create($cartItem);
-        $newCartItem->load('book');
-
-        return $newCartItem;
+       
     }
 
     /**
@@ -39,7 +34,12 @@ class CartItemRepository
      */
     public function store(Request $request)
     {
-        //
+        $cartItem = $request->only(['book_id', 'quantity']);
+        $cartItem['user_id'] = $request->user()->id;
+        $newCartItem = CartItem::create($cartItem);
+        $newCartItem->load('book');
+
+        return $newCartItem;
     }
 
     /**

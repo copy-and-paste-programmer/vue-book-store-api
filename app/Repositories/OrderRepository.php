@@ -27,7 +27,7 @@ class OrderRepository
             ->findOrFail($id);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $orderBooks = $request->collect('books');
 

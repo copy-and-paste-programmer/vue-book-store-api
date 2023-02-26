@@ -34,9 +34,9 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(OrderRequest $request)
+    public function store(OrderRequest $request)
     {
-        $newOrders = $this->orderRepository->create($request);
+        $newOrders = $this->orderRepository->store($request);
 
         return new OrderResource($newOrders);
     }
