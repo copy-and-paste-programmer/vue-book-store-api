@@ -19,9 +19,9 @@ class CartItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cartItems = $this->cartItemRepository->index();
+        $cartItems = $this->cartItemRepository->index($request);
 
         return CartItemResource::collection($cartItems);
     }
@@ -80,7 +80,9 @@ class CartItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $updatedCartItem = $this->cartItemRepository($request, $id);
+
+        return new CartItemResource($updatedCartItem);
     }
 
     /**

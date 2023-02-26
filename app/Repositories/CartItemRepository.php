@@ -11,9 +11,9 @@ class CartItemRepository
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return CartItem::with(['book'])->get();
+        return CartItem::with(['book'])->where('user_id', $request->user()->id)->get();
     }
 
     /**
@@ -23,7 +23,7 @@ class CartItemRepository
      */
     public function create(Request $request)
     {
-       
+
     }
 
     /**
@@ -73,7 +73,11 @@ class CartItemRepository
      */
     public function update(Request $request, $id)
     {
-        //
+        $cartItem = $request->only(['book_id', 'quantity']);
+
+        return CartItem::where('id', $id)
+            ->where('user_id', $request->user()->id)
+            ->update($cartItem);
     }
 
     /**
