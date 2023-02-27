@@ -23,7 +23,8 @@ class BookRepository
 
     public function index(Request $request)
     {
-        return Book::with(['image', 'categories', 'author'])
+        return Book::query()
+            ->with(['image', 'categories', 'author'])
             ->filter($request->search)
             ->paginate(10);
     }
@@ -67,12 +68,14 @@ class BookRepository
 
     public function show($id)
     {
-        return Book::with(['image', 'author', 'categories'])->findOrFail($id);
+        return Book::query()
+            ->with(['image', 'author', 'categories'])
+            ->findOrFail($id);
     }
 
     public function update(Request $request, $id)
     {
-        $book = Book::with(['image'])->findOrFail($id);
+        $book = Book::query()->with(['image'])->findOrFail($id);
 
         $data = $request->only(
             [
@@ -89,7 +92,7 @@ class BookRepository
         DB::beginTransaction();
 
         try {
-            $book->query()->update($data);
+            $book->update($data);
             $book->categories()->sync($request->categories);
 
             if ($request->hasFile('image')) {
@@ -117,7 +120,7 @@ class BookRepository
 
     public function destroy($id)
     {
-        $book = Book::with(['image'])->findOrFail($id);
+        $book = Book::query()->with(['image'])->findOrFail($id);
 
         DB::beginTransaction();
 
@@ -141,10 +144,12 @@ class BookRepository
         DB::beginTransaction();
 
         try {
-            $userBookRating = BookRating::where('book_id', $id)
-                ->where('user_id', $request->user()->id)->first();
+            $userBookRating = BookRating::query()
+                ->where('book_id', $id)
+                ->where('user_id', $request->user()->id)
+                ->first();
 
-            $book = Book::where('id', $id)->first();
+            $book = Book::query()->where('id', $id)->first();
 
             if ($userBookRating) {
                 $oldRating = $userBookRating->rating;
@@ -154,7 +159,7 @@ class BookRepository
                     'rating' => $request->star,
                 ]);
             } else {
-                BookRating::create([
+                BookRating::query()->create([
                     'book_id' => $id,
                     'user_id' => Auth::user()->id,
                     'rating' => $request->star,
@@ -172,9 +177,11 @@ class BookRepository
             $totalCount = $star1 + $star2 + $star3 + $star4 + $star5;
             $averageRating = ($star1 + 2 * $star2 + 3 * $star3 + 4 * $star4 + 5 * $star5) / $totalCount;
 
-            Book::where('id', $id)->update([
-                'average_rating' => round($averageRating),
-            ]);
+            Book::query()
+                ->where('id', $id)
+                ->update([
+                    'average_rating' => round($averageRating),
+                ]);
 
             DB::commit();
         } catch (Throwable $e) {

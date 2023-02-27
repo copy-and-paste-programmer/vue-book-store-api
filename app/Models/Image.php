@@ -15,6 +15,7 @@ class Image extends Model
         'disk',
         'path',
         'size',
+        'url',
         'mime_type',
     ];
 
