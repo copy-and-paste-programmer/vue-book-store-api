@@ -74,10 +74,14 @@ class CartItemRepository
     public function update(Request $request, $id)
     {
         $cartItem = $request->only(['book_id', 'quantity']);
+        
+        $updateCartItem = CartItem::where('user_id',$request->user()->id)->findOrFail($id);
+        
+        $updateCartItem->update($cartItem);
 
-        return CartItem::where('id', $id)
-            ->where('user_id', $request->user()->id)
-            ->update($cartItem);
+        $updateCartItem->load('book');
+        
+        return $updateCartItem;
     }
 
     /**

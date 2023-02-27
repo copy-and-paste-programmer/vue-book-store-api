@@ -56,9 +56,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
-
-    Route::post('/carts-items', [CartItemController::class, 'store']);
+    
     Route::get('/carts-items', [CartItemController::class, 'index']);
+    Route::post('/carts-items', [CartItemController::class, 'store']);
+    Route::put('/carts-items/{id}', [CartItemController::class, 'update']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);
