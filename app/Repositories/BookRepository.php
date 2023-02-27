@@ -146,7 +146,8 @@ class BookRepository
         try {
             $userBookRating = BookRating::query()
                 ->where('book_id', $id)
-                ->where('user_id', $request->user()->id)->first();
+                ->where('user_id', $request->user()->id)
+                ->first();
 
             $book = Book::where('id', $id)->first();
 
