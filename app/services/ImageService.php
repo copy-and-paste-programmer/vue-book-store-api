@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageService
 {
-    public function upload(UploadedFile $file, $prefix = null)
+    public function upload(UploadedFile $file, $folder = null)
     {
-        $path = 'upload/' . $prefix ;
+        $path = 'upload/' . $folder ;
 
         $uploadPath = Storage::put($path, $file);
 

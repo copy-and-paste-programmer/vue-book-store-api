@@ -97,7 +97,7 @@ class BookRepository
 
             if ($request->hasFile('image')) {
                 $book->image()->delete();
-                $image = $this->imageService->upload($request->file('image'));
+                $image = $this->imageService->upload(file: $request->file('image'), folder: 'books');
                 $book->image()->save($image);
                 Storage::delete($book->image->path);
             }
