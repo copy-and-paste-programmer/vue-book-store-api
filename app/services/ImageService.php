@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Image;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ImageService
 {
@@ -20,6 +19,7 @@ class ImageService
             'path' => $uploadPath,
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
+            'url' => Storage::url($uploadPath),
         ]);
     }
 }
