@@ -149,7 +149,7 @@ class BookRepository
                 ->where('user_id', $request->user()->id)
                 ->first();
 
-            $book = Book::where('id', $id)->first();
+            $book = Book::query()->where('id', $id)->first();
 
             if ($userBookRating) {
                 $oldRating = $userBookRating->rating;
