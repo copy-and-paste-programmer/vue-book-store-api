@@ -3,11 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,9 +53,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/books/rates/{id}', [BookController::class, 'rate']);
 
     //Order
-    Route::post('/order',[OrderController::class, 'order']);
-    Route::get('/order',[OrderController::class, 'index']);
-    Route::get('/order/{id}',[OrderController::class, 'show']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+
+    Route::post('/carts-items', [CartItemController::class, 'store']);
+    Route::get('/carts-items', [CartItemController::class, 'index']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);

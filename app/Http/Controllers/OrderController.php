@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Repositories\OrderRepository;
 
 class OrderController extends Controller
@@ -22,7 +23,9 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->orderRepository->index($request);
+        $orders = $this->orderRepository->index($request);
+
+        return OrderResource::collection($orders);
     }
 
     /**
@@ -31,9 +34,11 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function order(OrderRequest $request)
+    public function store(OrderRequest $request)
     {
-        return $this->orderRepository->order($request);
+        $newOrders = $this->orderRepository->store($request);
+
+        return new OrderResource($newOrders);
     }
 
      /**
@@ -44,6 +49,8 @@ class OrderController extends Controller
      */
     public function show(Request $request,$id)
     {
-        return $this->orderRepository->show($request,$id);
+        $order = $this->orderRepository->show($request,$id);
+
+        return new OrderResource($order);
     }
 }

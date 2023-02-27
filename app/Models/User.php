@@ -34,6 +34,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at'
     ];
 
     /**
@@ -58,7 +59,7 @@ class User extends Authenticatable
     }
 
     /**
-     * this method is overide to laravel passport package
+     * this method is overided to laravel passport package
      */
     public function findAndValidateForPassport($email, $password)
     {

@@ -9,20 +9,33 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
+    protected $fillable = [
         'user_id',
         'phone_no',
         'address',
         'total_price',
         'status',
-        'reason'
+        'reason',
     ];
 
-    public function orderDetail(){
-        return $this->hasMany(OrderDetail::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function books()
+    {
+        return $this->belongsToMany(Book::class)->withTimestamps();
+    }
+
+    public function orderBooks()
+    {
+        return $this->belongsToMany(Book::class)
+            ->select([
+                'books.id',
+                'books.name',
+                'books.price',
+                'book_order.quantity as quantity',
+            ]);
     }
 }
