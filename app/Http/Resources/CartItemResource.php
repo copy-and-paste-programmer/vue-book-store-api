@@ -16,7 +16,6 @@ class CartItemResource extends JsonResource
     {
         return [
             'book' => $this->whenLoaded('book'),
-            'user' => $request->user()->toArray(),
             'quantity' => $this->quantity,
         ];
     }

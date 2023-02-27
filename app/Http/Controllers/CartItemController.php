@@ -80,7 +80,7 @@ class CartItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updatedCartItem = $this->cartItemRepository($request, $id);
+        $updatedCartItem = $this->cartItemRepository->update($request, $id);
 
         return new CartItemResource($updatedCartItem);
     }
