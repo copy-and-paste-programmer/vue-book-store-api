@@ -17,7 +17,7 @@ class AuthRepository
         $this->authenticationService = $authenticationService;
     }
 
-    public function authenticated(Request $request) :object
+    public function authenticated($request) :object
     {
         $client = Client::where('id', 2)->first();
 

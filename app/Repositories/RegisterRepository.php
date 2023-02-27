@@ -4,8 +4,9 @@ namespace App\Repositories;
 
 use Throwable;
 use App\Models\User;
-use App\Services\ImageService;
 use Illuminate\Http\Request;
+use App\Services\ImageService;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -18,9 +19,9 @@ class RegisterRepository
         $this->imageService = $imageService;
     }
 
-    public function register(Request $request)
+    public function register($request)
     {
-        $data = $request->only(['name', 'email', 'password']);
+        $data = $request->only(['name', 'email', 'password' , 'phone_no' , 'address']);
 
         DB::beginTransaction();
 
