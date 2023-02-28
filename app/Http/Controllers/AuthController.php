@@ -25,8 +25,13 @@ class AuthController extends Controller
      * @param Request $request
      * @return object
      */
-    public function authenticated(LoginRequest $request): object
+    public function authenticated(Request $request): object
     {
+        $this->validate($request,[
+            'email' => 'required|email|email:rfc,filter|regex:/(.+)@(.+)\.(.+)/i',
+            'password' => 'required|min:8|max:50'
+        ]);
+        
         $data = $this->authRepository->authenticated($request);
 
         return response()->json($data, 200)->withCookie(cookie(
