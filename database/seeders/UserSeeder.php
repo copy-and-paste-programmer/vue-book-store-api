@@ -17,7 +17,9 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'wyl',
             'email' => 'wyl@gmail.com',
-            'password' => 'helloworld'
+            'password' => 'helloworld',
+            'phone_no' => '0394239048',
+            'address' => 'Yangon'
         ]);
     }
 }
