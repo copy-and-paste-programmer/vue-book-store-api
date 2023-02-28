@@ -5,13 +5,12 @@ namespace App\Services;
 use App\Models\Image;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ImageService
 {
-    public function upload(UploadedFile $file, $prefix = null)
+    public function upload(UploadedFile $file, $folder = null)
     {
-        $path = 'upload/' . $prefix ;
+        $path = 'upload/' . $folder ;
 
         $uploadPath = Storage::put($path, $file);
 
@@ -20,6 +19,7 @@ class ImageService
             'path' => $uploadPath,
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
+            'url' => Storage::url($uploadPath),
         ]);
     }
 }
